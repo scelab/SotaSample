@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="lib/sotalib.jar"/>
 	<classpathentry kind="lib" path="lib/SRClientHelper.jar"/>
 	<classpathentry kind="lib" path="lib/opencv-310.jar"/>
+	<classpathentry kind="lib" path="lib/activemq-all-5.15.8.jar" sourcepath="/var/folders/y9/r430s8h57xs6nzy8g_dvvt_m0000gn/T/.org.sf.feeling.decompiler1543632268436/source/activemq-all-5.15.8-sources.jar"/>
+	<classpathentry kind="lib" path="lib/json-20180813.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
