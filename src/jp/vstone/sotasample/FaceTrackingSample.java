@@ -50,7 +50,7 @@ public class FaceTrackingSample {
 			//LEDを点灯（左目：赤、右目：赤、口：Max、電源ボタン：赤）
 			pose.setLED_Sota(Color.BLUE, Color.BLUE, 255, Color.GREEN);
 
-			motion.play(pose, 500);
+			motion.play(pose, 500, "hogehoge");
 			CRobotUtil.wait(500);
 
 			//笑顔推定有効
@@ -69,11 +69,10 @@ public class FaceTrackingSample {
 					CRobotUtil.Log(TAG, "[Detect] Smile:" + result.getSmile());
 					//
 					if(result.getSmile() > SMILE_POINT){
-
 						//LEDだけ先に変更
 						pose.setLED_Sota(Color.ORANGE, Color.ORANGE, 255, Color.GREEN);
 						//playに任意のKeyを指定すると、
-						motion.play(pose, 100,"FACE_LED");
+						motion.play(pose, 100,"hogehoge");
 
 						//写真を取る前のポーズ＋音声
 						CPlayWave.PlayWave("./sound/take_a_photo.wav");

@@ -20,7 +20,7 @@ import org.apache.activemq.command.ActiveMQTextMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-// ActiveMQを利用するモジュールの抽象クラス
+
 public abstract class AmqModule {
 
 	public String ip;
@@ -30,7 +30,6 @@ public abstract class AmqModule {
 	private Connection conn;
 	private Map<String, MessageProducer> pubs;
 	private Thread runThread;
-	private Runnable shutdownProcedure;
 
 	public AmqModule (String ip, String port, String robotId) {
 		this.ip = ip;
@@ -51,7 +50,7 @@ public abstract class AmqModule {
 		public void onMessage(Message message) {
 			try {
 				JSONObject obj = new JSONObject(((TextMessage)message).getText());
-				subQ.put(obj);
+				AmqModule.this.subQ.put(obj);
 			} catch (InterruptedException | JSONException | JMSException e) { e.printStackTrace(); }
 		}
 	}
@@ -74,45 +73,27 @@ public abstract class AmqModule {
 		pubs.get(topic).send(msg);
 	}
 
-	public void run() throws InterruptedException, JMSException {
+	protected void run() throws InterruptedException, JMSException {
 		subscribe("Quit");
-		addShutdownHook();
 		Runnable _run = () -> {
 			while (true) {
 				try {
 					JSONObject obj = subQ.take();
 					String topic = obj.getString("topic");
 					if (topic.equals("Quit")) break;
-					if (!obj.has("robot_id")) continue;
-					if (!obj.getString("robot_id").equals(robotId)) continue;
-					else procedure(obj);
+					procedure(obj);
 				} catch (InterruptedException e) { e.printStackTrace(); }
 			}
 			try {
-				if (shutdownProcedure != null) shutdownProcedure.run();
 				conn.close();
 			} catch (JMSException e) { e.printStackTrace(); }
 		};
 		runThread = new Thread(_run);
 		runThread.start();
+	}
+
+	public void join() throws InterruptedException {
 		runThread.join();
-	}
-
-	public void setShutdownProcedure(Runnable procedure) {
-		this.shutdownProcedure = procedure;
-	}
-
-	private void addShutdownHook() {
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-			public void run() {
-				try {
-					JSONObject obj = new JSONObject();
-					obj.put("topic", "Quit");
-					subQ.put(obj);
-					runThread.join();
-				} catch (InterruptedException e) { e.printStackTrace(); }
-	        }
-	    }));
 	}
 
 	abstract protected void procedure(JSONObject obj);
