@@ -4,6 +4,7 @@ import javax.jms.JMSException;
 
 import org.json.JSONObject;
 
+import jp.vstone.RobotLib.CRobotUtil;
 import jp.vstone.sotasample.amqmodule.Main.GlobalVariable;
 import jp.vstone.sotatalk.SpeechRecog.RecogResult;
 
@@ -14,6 +15,7 @@ public final class SpeechRecognizer extends AmqModule {
 
 	protected void procedure(JSONObject obj) {
 		if (!obj.getString("listener").equals(robotId)) return;
+		CRobotUtil.Log("[SpeechRecognizer]", obj.getString("timestamp") + " SpeechRecognitionOrdered");
 		RecogResult result = GlobalVariable.recog.getRecognition(5000);
 		obj.put("topic", "SpeechRecognitionCompleted");
 		if (result.recognized) obj.put("basic_result", result.basicresult);

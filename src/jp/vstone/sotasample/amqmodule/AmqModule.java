@@ -50,6 +50,7 @@ public abstract class AmqModule {
 		public void onMessage(Message message) {
 			try {
 				JSONObject obj = new JSONObject(((TextMessage)message).getText());
+				obj.put("timestamp", String.valueOf(message.getJMSTimestamp()));
 				AmqModule.this.subQ.put(obj);
 			} catch (InterruptedException | JSONException | JMSException e) { e.printStackTrace(); }
 		}
