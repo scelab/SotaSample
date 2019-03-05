@@ -74,6 +74,11 @@ public abstract class AmqModule {
 		pubs.get(topic).send(msg);
 	}
 
+	public void publish(String topic, JSONObject obj) throws JMSException {
+		obj.put("topic", topic);
+		publish(obj);
+	}
+
 	protected void run() throws InterruptedException, JMSException {
 		subscribe("Quit");
 		Runnable _run = () -> {
