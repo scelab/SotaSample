@@ -1,0 +1,26 @@
+RobotVars:
+  robotId: "R00"
+  isUsing3DSensor: false
+  FaceTrack_P_GAIN: 0.25
+  FaceTrack_D_GAIN: 0.55
+  FaceTrack_Y_GAIN: 1.0
+
+
+AmqVars:
+# Ip and Port for connecting to ActiveMq
+  ip:   "192.168.11.7"
+  port: "61616"
+
+Positions:
+# robot's coordination [x, y, z, roll, pitch, yaw]
+# (*) Use "double" type.
+#   x: front direction
+#   y: side direction
+#   z: vertical direction
+#   roll:  (right) -250  ~ 250  (left)
+#   pitch: (up)    -290  ~ 80   (down)
+#   yaw:   (right) -1450 ~ 1450 (left)
+
+  R00:  [    0.0,    0.0,    0.0,    0.0,    0.0,    0.0]
+  R01:  [    0.0,  800.0,    0.0,    0.0,    0.0,    0.0]
+
